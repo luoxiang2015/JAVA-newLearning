@@ -1,0 +1,18 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+	"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+	<session-factory name="foo">
+		<property name="show_sql">true</property>
+		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+		<property name="hibernate.hbm2ddl.auto">update</property>
+		
+		<mapping resource="com/huasoft/ilearning/bean/Depart.hbm.xml"/>
+		<mapping resource="com/huasoft/ilearning/bean/Catalog.hbm.xml"/>
+		<mapping resource="com/huasoft/ilearning/bean/Lecture.hbm.xml"/>
+		 <mapping resource="com/huasoft/ilearning/bean/Employee.hbm.xml"/>
+		 <mapping resource="com/huasoft/ilearning/bean/Role.hbm.xml"/>
+		<mapping resource="com/huasoft/ilearning/bean/Node.hbm.xml"/>
+	</session-factory>
+</hibernate-configuration>

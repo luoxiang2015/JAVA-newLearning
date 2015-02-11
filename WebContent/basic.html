@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Basic Layout - jQuery EasyUI Demo</title>
+	<link rel="stylesheet" type="text/css" href="css/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="css/themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="css/demo.css">
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/jquery.easyui.min.js"></script>
+	<script charset="utf-8" src="js/kindeditor.js"></script>
+	
+	<link rel="stylesheet" href="css/zTreeStyle/zTreeStyle.css" type="text/css">
+
+	<script type="text/javascript" src="js/jquery.ztree.core-3.5.min.js"></script>
+	<SCRIPT type="text/javascript">
+
+		var setting = {
+			data: {
+				simpleData: {
+					enable: true
+				}
+			},
+			view: {
+				selectedMulti: false
+			}
+		};
+		
+
+ 
+		var zNodes =[
+			{ id:1, pId:0, name:"父节点1 - 展开", open:true},
+			{ id:11, pId:1, name:"父节点11 - 折叠"},
+			{ id:111, pId:11, name:"叶子节点111"},
+			{ id:112, pId:11, name:"叶子节点112"},
+			{ id:113, pId:11, name:"叶子节点113"},
+			{ id:114, pId:11, name:"叶子节点114"},
+			{ id:12, pId:1, name:"父节点12 - 折叠"},
+			{ id:121, pId:12, name:"叶子节点121"},
+			{ id:122, pId:12, name:"叶子节点122"},
+			{ id:123, pId:12, name:"叶子节点123"},
+			{ id:124, pId:12, name:"叶子节点124"},
+			{ id:13, pId:1, name:"父节点13 - 没有子节点", isParent:true},
+			{ id:2, pId:0, name:"父节点2 - 折叠"},
+			{ id:21, pId:2, name:"父节点21 - 展开", open:true},
+			{ id:211, pId:21, name:"叶子节点211"},
+			{ id:212, pId:21, name:"叶子节点212"},
+			{ id:213, pId:21, name:"叶子节点213"},
+			{ id:214, pId:21, name:"叶子节点214"},
+			{ id:22, pId:2, name:"父节点22 - 折叠"},
+			{ id:221, pId:22, name:"叶子节点221"},
+			{ id:222, pId:22, name:"叶子节点222"},
+			{ id:223, pId:22, name:"叶子节点223"},
+			{ id:224, pId:22, name:"叶子节点224"},
+			{ id:23, pId:2, name:"父节点23 - 折叠"},
+			{ id:231, pId:23, name:"叶子节点231"},
+			{ id:232, pId:23, name:"叶子节点232"},
+			{ id:233, pId:23, name:"叶子节点233"},
+			{ id:234, pId:23, name:"叶子节点234"},
+			{ id:3, pId:0, name:"父节点3 - 没有子节点", isParent:true, open:true}
+		];
+		
+		
+		$(document).ready(function(){
+			$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+
+		});
+		
+		KE.show({
+			id : 'content1'
+			
+		});
+
+		
+		
+		function f_add(){
+			$('#w').window('open');
+			$('#ff').form('clear');
+		}
+		
+		</script>
+	
+	
+	
+</head>
+<body class="easyui-layout">
+	
+	
+		
+		
+		<div data-options="region:'west',split:true" style="width:200px;">
+		
+		<ul id="treeDemo" class="ztree"></ul>
+		
+		
+		</div>
+		<div data-options="region:'center'">
+		<a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'" onclick="f_add()">新建</a>
+			<table class="easyui-datagrid"
+					data-options="url:'datagrid_data1.json',method:'get',border:false,singleSelect:true,fit:true,fitColumns:true,rownumbers:true">
+				<thead>
+					<tr>
+						<th data-options="field:'itemid'" width="80">主题</th>
+						<th data-options="field:'productid'" width="100">作者</th>
+						<th data-options="field:'listprice',align:'right'" width="80">创建时间</th>
+						<th data-options="field:'unitcost',align:'right'" width="80">所属大纲</th>
+						<th data-options="field:'attr'" width="150">操作</th>
+						<th data-options="field:'status',align:'center'" width="50">Status</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+		
+		
+		
+		<div id="w" class="easyui-window" title="Modal Window" 
+	data-options="modal:true,closed:true,iconCls:'icon-edit',collapsible:false,minimizable:false" 
+	style="width:760px;height:360px;padding:10px;">
+		<form id="ff" name="ff"  method="post">
+		<input type="hidden" name="id"/>
+<table style="width:100%">
+	    		<tr>
+	    			<td>主题:</td>
+	    			<td><input class="easyui-validatebox" type="text" name="number" data-options="required:true"></input></td>
+	    			<td>创建人:</td>
+	    			<td><input class="easyui-validatebox" type="text" name="name" data-options="required:true"></input></td>
+	    		</tr>
+	    		<tr>
+	    			<td colspan="4">
+					<textarea id="content1" name="content" style="width:700px;height:230px;visibility:hidden;"></textarea>
+					</td>
+	    			
+	    		</tr>
+	    		
+				
+				
+</table>
+<div style="padding:5px">
+	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">Submit</a>
+	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()">reset</a>
+	    </div>
+
+</form>
+</div>
+	
+
+</body>
+</html>

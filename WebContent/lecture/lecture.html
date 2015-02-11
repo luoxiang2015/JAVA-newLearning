@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Basic Layout - jQuery EasyUI Demo</title>
+	<link rel="stylesheet" type="text/css" href="../css/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="../css/themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="../css/demo.css">
+	<script type="text/javascript" src="../js/jquery.min.js"></script>
+	<script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
+	<script charset="utf-8" src="../js/kindeditor.js"></script>
+	
+	<link rel="stylesheet" href="../css/zTreeStyle/zTreeStyle.css" type="text/css">
+
+	<script type="text/javascript" src="../js/jquery.ztree.core-3.5.min.js"></script>
+	<SCRIPT type="text/javascript">
+
+		var setting = {
+				async: {
+					enable: true,
+					url:"catalogAction!query.action?a="+new Date(),
+					autoParam:["id"]
+				},
+				callback: {
+					onClick: f_clickTree
+					
+				},
+			view: {
+				selectedMulti: false
+			}
+		};
+		
+		var curNode=null;
+		
+		function f_clickTree(ev,treeId,treeNode){
+			curNode=treeNode;
+			$('#datalist').datagrid({
+				url:'lectureAction!query.action?catalog='+curNode.id+"&"+new Date()
+			});
+		}
+		
+
+ 
+		
+		$(document).ready(function(){
+			$.fn.zTree.init($("#treeDemo"), setting);
+
+		});
+		
+		KE.show({
+			id : 'content1'
+			
+		});
+
+		
+		function f_formate(value,rowdata,index){
+			
+			return "<a onclick=\"f_init("+rowdata.id+","+index+")\">修改</a>&nbsp;&nbsp;<a onclick=\"f_delete("+rowdata.id+","+index+")\">删除</a>";
+		}
+		
+		function f_delete(id,index){
+			$.messager.confirm('确认删除','是否确定删除？',function(r){ //弹出确认框  
+				if (r){  //如果确认删除，发送异步请求删除数据 
+					$.get("lectureAction!delete.action?id="+id,function(data){
+						if(parseInt(data)==1)
+							$("#datalist").datagrid("deleteRow",index);
+					});
+				}
+			});
+			
+		}
+		var curindex=-1;
+		var curid=0;
+		function f_init(id,index){
+			curindex=index;
+			curid=id;
+			
+			$("#ff").form({
+				
+				onLoadSuccess:function(data){
+					//alert(data.content);
+					KE.util.setFullHtml('content1', '');
+					KE.util.focus("content1");
+			          KE.util.selection("content1");
+			          KE.util.insertHtml("content1", data.content);
+
+				}
+			});
+			
+			$("#ff").form("load","lectureAction!load.action?id="+id+"&"+new Date());
+			
+			$('#w').window({title:'修改讲义'});
+			$('#w').window('open');
+		}
+		
+		
+		function f_add(){
+			curindex=-1;
+			curid=0;
+			if(curNode){
+				$('#w').window({title:'添加'+curNode.name+'讲义'});
+				$('#w').window('open');
+				$('#ff').form('clear');
+				 KE.util.setFullHtml('content1', '');
+
+			}else{
+				$.messager.alert('提示','请选选择大纲！');  
+			}
+			$('#datalist').datagrid("unselectAll");
+			
+		}
+		
+		
+		
+		function submitForm(){//提交操作
+			if(curindex==-1){
+				$("#ff").form("submit",{
+					url:"lectureAction!add.action?catalog="+curNode.id,
+					success:function(data){//服务器成功返回时回调方法
+						var d=JSON.parse(data); //把服务器返回的数据转换成json对象
+						
+						$('#w').window('close');//关闭窗口
+						
+						$("#datalist").datagrid("appendRow",d);//在列表中追加一行
+						
+					}
+					
+				});
+			}else{
+				$("#ff").form("submit",{
+					url:"lectureAction!update.action?catalog="+curNode.id,
+					success:function(data){//服务器成功返回时回调方法
+						var d=JSON.parse(data); //把服务器返回的数据转换成json对象
+						
+						$('#w').window('close');//关闭窗口
+						
+						$("#datalist").datagrid("updateRow",{index:curindex,row:d});//修改指定行的数据
+					}
+					
+				});
+			}
+			
+		}
+		
+		function clearForm(){
+			if(curid==0){
+				$.messager.confirm('确认','是否确定清除？',function(r){ //弹出确认框  
+					if (r){  //如果确认删除，发送异步请求删除数据 
+						$('#ff').form('clear');
+						KE.util.setFullHtml('content1', '');
+					}
+				});
+			}else{
+				
+				$("#ff").form("load","lectureAction!load.action?id="+curid+"&"+new Date());
+			}
+			
+		}
+		
+		</script>
+	
+	
+	
+</head>
+<body class="easyui-layout">
+	
+	
+		
+		
+		<div data-options="region:'west',split:true" style="width:200px;">
+		
+		<ul id="treeDemo" class="ztree"></ul>
+		
+		
+		</div>
+		<div data-options="region:'center'">
+		<a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'" onclick="f_add()">新建</a>
+			<table class="easyui-datagrid" id="datalist"
+					data-options="method:'post',border:false,singleSelect:true,fit:true,fitColumns:true,rownumbers:true">
+				<thead>
+					<tr>
+						<th data-options="field:'title'" width="80">主题</th>
+						<th data-options="field:'creater'" width="100">作者</th>
+						<th data-options="field:'createDate'" width="80">创建时间</th>
+						<th data-options="field:'attr',formatter:f_formate" width="150">操作</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+		
+		
+		
+		<div id="w" class="easyui-window" title="Modal Window" 
+	data-options="modal:true,closed:true,iconCls:'icon-edit',collapsible:false,minimizable:false" 
+	style="width:760px;height:360px;padding:10px;">
+		<form id="ff" name="ff"  method="post">
+		<input type="hidden" id="id" name="id"/>
+<table style="width:100%">
+	    		<tr>
+	    			<td>主题:</td>
+	    			<td><input class="easyui-validatebox" type="text" id="title" name="title" data-options="required:true"></input></td>
+	    			<td>创建人:</td>
+	    			<td><input class="easyui-validatebox" type="text" id="creater" name="creater" data-options="required:true"></input></td>
+	    		</tr>
+	    		<tr>
+	    			<td colspan="4">
+					<textarea  id="content1" name="content" style="width:700px;height:230px;"></textarea>
+					</td>
+	    			
+	    		</tr>
+	    		
+				
+				
+</table>
+<div style="padding:5px">
+	    	
+	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()">reset</a>
+	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">Submit</a>
+	    </div>
+
+</form>
+</div>
+	
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<title>无标题文档</title>
+<link rel="stylesheet" type="text/css" href="css/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="css/themes/icon.css">
+
+
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/jquery.easyui.min.js"></script>
+	
+	<script>
+	
+	function f_formate(){
+		return "<a onclick=\"$('#w').window('open')\">修改</a>&nbsp;&nbsp;<a>删除</a>";
+	}
+	
+	function f_form2(value,row,rowindex){
+		return "$"+value;
+	}
+	
+	function f_formateDate(d){
+		return d.getYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
+	}
+	
+	</script>
+	
+</head>
+
+<body>
+<a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'" onclick="$('#w').window('open')">新建</a>
+<table class="easyui-datagrid" title="Basic DataGrid" 
+			data-options="fit:true,url:'datagrid_data1.json',method:'get',noheader:true,singleSelect:true">
+		<thead>
+			<tr>
+				<th data-options="field:'itemid',width:80">Item ID</th>
+				<th data-options="field:'productid',width:100">Product</th>
+				<th data-options="field:'listprice',width:80,align:'right',formatter:f_form2">List Price</th>
+				<th data-options="field:'unitcost',width:80,align:'right'">Unit Cost</th>
+				<th data-options="field:'attr1',width:250">Attribute</th>
+				<th data-options="field:'status',width:60">status</th>
+				<th data-options="field:'test',width:100,align:'center',formatter:f_formate">操作</th>
+			</tr>
+		</thead>
+	</table>
+	
+	
+	<div id="w" class="easyui-window" title="Modal Window" 
+	data-options="modal:true,closed:true,iconCls:'icon-edit',collapsible:false,minimizable:false" 
+	style="width:500px;height:300px;padding:10px;">
+		<form method="post">
+
+<table>
+	    		<tr>
+	    			<td>姓名:</td>
+	    			<td><input class="easyui-validatebox" type="text" name="name" data-options="required:true"></input></td>
+	    		</tr>
+	    		<tr>
+	    			<td>邮箱:</td>
+	    			<td><input class="easyui-validatebox" type="text" name="email" data-options="required:true,validType:'email'"></input></td>
+	    		</tr>
+				<tr>
+	    			<td>时间:</td>
+	    			<td><input class="easyui-datebox" data-options="formatter:f_formateDate"></input></td>
+	    		</tr>
+	    		<tr>
+	    			<td>主题:</td>
+	    			<td><input class="easyui-validatebox" type="text" name="subject" data-options="required:true"></input></td>
+	    		</tr>
+	    		<tr>
+	    			<td>消息:</td>
+	    			<td><textarea name="message" style="height:60px;"></textarea></td>
+	    		</tr>
+				
+</table>
+
+<div style="padding:5px">
+	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">Submit</a>
+	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()">Clear</a>
+	    </div>
+
+</form>
+</div>
+
+
+
+</body>
+</html>

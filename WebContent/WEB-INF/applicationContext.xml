@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  - Middle tier application context definition for the image database.
+  -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:context="http://www.springframework.org/schema/context"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xmlns:tx="http://www.springframework.org/schema/tx"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+				http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+				http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+				http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+
+	<!-- 数据源配置 -->
+	<bean id="dataSourse" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+			<property name="url">
+			<value>jdbc:mysql:///newlearning?useUnicode=true&amp;characterEncoding=utf8</value>
+			</property>
+			<property name="password" value="123456">
+			</property>
+			<property name="username" value="root"></property>
+			<property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
+			
+	</bean>
+	
+	<!-- 配置sessionFactory -->
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSourse"></property>
+		<property name="configLocation" value="classpath:hibernate.cfg.xml"></property>
+	</bean>
+	
+	<!-- 大纲管理配置 -->
+	<bean id="catalogAction" class="com.huasoft.ilearning.action.CatalogAction" scope="prototype">
+		<property name="service" ref="catalogService"></property>
+	</bean>
+	
+	<bean id="catalogService" class="com.huasoft.ilearning.service.CatalogServiceImpl" scope="prototype">
+		<property name="dao" ref="catalogDao"></property>
+		<property name="ldao" ref="lectureDao"></property>
+	</bean>
+	
+	<bean id="catalogDao" class="com.huasoft.ilearning.dao.CatalogDaoImpl" scope="prototype">
+	<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	
+	<!-- 岗位管理配置 -->
+	<bean id="departAction" class="com.huasoft.ilearning.action.DepartAction" scope="prototype">
+		<property name="service" ref="departService"></property>
+	</bean>
+	
+	<bean id="departService" class="com.huasoft.ilearning.service.DepartServiceImpl" scope="prototype">
+		<property name="dao" ref="departDao"></property>
+	</bean>
+	
+	<bean id="departDao" class="com.huasoft.ilearning.dao.DepartDaoImpl" scope="prototype">
+	<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<!--讲义管理配置 -->
+	<bean id="lectureAction" class="com.huasoft.ilearning.action.LectureAction" scope="prototype">
+		<property name="service" ref="lectureService"></property>
+	</bean>
+	
+	<bean id="lectureService" class="com.huasoft.ilearning.service.LectureServiceImpl" scope="prototype">
+		<property name="dao" ref="lectureDao"></property>
+	</bean>
+	<bean id="lectureDao" class="com.huasoft.ilearning.dao.LectureDaoImpl" scope="prototype">
+	<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<!--员工管理配置 -->
+	<bean id="employeeAction" class="com.huasoft.ilearning.action.EmployeeAction" scope="prototype">
+		<property name="service" ref="employeeService"></property>
+	</bean>
+	
+	<bean id="employeeService" class="com.huasoft.ilearning.service.EmployeeServiceImpl" scope="prototype">
+		<property name="dao" ref="employeeDao"></property>
+	</bean>
+	<bean id="employeeDao" class="com.huasoft.ilearning.dao.EmployeeDaoImpl" scope="prototype">
+	<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	
+	<!--角色管理配置 -->
+	<bean id="roleAction" class="com.huasoft.ilearning.action.RoleAction" scope="prototype">
+		<property name="service" ref="roleService"></property>
+	</bean>
+	
+	<bean id="roleService" class="com.huasoft.ilearning.service.RoleServiceImpl" scope="prototype">
+		<property name="dao" ref="roleDao"></property>
+	</bean>
+	<bean id="roleDao" class="com.huasoft.ilearning.dao.RoleDaoImpl" scope="prototype">
+	<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<!--权限管理配置 -->
+	<bean id="nodeAction" class="com.huasoft.ilearning.action.NodeAction" scope="prototype">
+		<property name="service" ref="nodeService"></property>
+	</bean>
+	
+	<bean id="nodeService" class="com.huasoft.ilearning.service.NodeServiceImpl" scope="prototype">
+		<property name="dao" ref="nodeDao"></property>
+	</bean>
+	<bean id="nodeDao" class="com.huasoft.ilearning.dao.NodeDaoImpl" scope="prototype">
+	<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	
+	
+	
+	<!-- 事物管理器 -->
+	<bean id="tranManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<!-- 事物特性配置 -->
+	<tx:advice id="txadvice" transaction-manager="tranManager">
+		<tx:attributes>
+		
+		<tx:method name="insert*" propagation="REQUIRED" rollback-for="Exception"/>
+		<tx:method name="delete*" propagation="REQUIRED" rollback-for="Exception"/>
+		<tx:method name="update*" propagation="REQUIRED" rollback-for="Exception"/>
+		
+		<tx:method name="*" propagation="SUPPORTS" />
+		</tx:attributes>
+	</tx:advice>
+	
+	<!-- 切面配置 -->
+	<aop:config>
+	
+	<aop:pointcut expression="execution(* com.huasoft.ilearning.service.*.*(..))" id="pintcut"/>
+	<aop:advisor advice-ref="txadvice" pointcut-ref="pintcut"/>
+	
+	</aop:config>
+	
+	
+	
+</beans>

@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping 
+	package="com.huasoft.ilearning.bean">
+
+	<class name="Employee" table="t_employee" >
+		
+		<id name="id">
+			<generator class="native"/>
+		</id>
+		
+		<property name="username"/>
+		<property name="pwd"/>
+		<property name="truename"/>
+		<property name="sex"/>
+		<property name="birthDay"/>
+		<property name="createDate"/>
+		<property name="remark"/>
+		<property name="roles"/>
+		
+		
+		
+	</class>
+	
+</hibernate-mapping>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<!-- START SNIPPET: xworkSample -->
+<struts>
+
+ 
+    <package name="default" extends="struts-default" namespace="/">
+    	<action name="departAction" class="departAction">
+    		<result>/success.html</result>
+    	</action>
+    	
+    	<action name="catalogAction" class="catalogAction">
+    		<result>/success.html</result>
+    	</action>
+    	
+    	<action name="lectureAction" class="lectureAction">
+    		<result>/success.html</result>
+    	</action>
+    	
+    	<action name="employeeAction" class="employeeAction">
+    	<result>/index.jsp</result>
+    	<result name="error">/login.jsp</result>
+    	</action>
+    	
+    	<action name="roleAction" class="roleAction">
+    	</action>
+    	
+    	<action name="nodeAction" class="nodeAction">
+    	</action>
+    </package>
+
+   
+
+</struts>
+
+<!-- END SNIPPET: xworkSample -->
+

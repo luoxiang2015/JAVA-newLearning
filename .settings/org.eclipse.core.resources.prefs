@@ -1,0 +1,14 @@
+eclipse.preferences.version=1
+encoding//WebContent/catalog/tree.jsp=UTF-8
+encoding//WebContent/depart/form.html=UTF-8
+encoding//WebContent/depart/list.jsp=UTF-8
+encoding//WebContent/index.jsp=UTF-8
+encoding//WebContent/js/jquery.min.js=UTF-8
+encoding//WebContent/js/json.js=UTF-8
+encoding//WebContent/js/kindeditor.js=UTF-8
+encoding//src/com/huasoft/ilearning/action/CatalogAction.java=UTF-8
+encoding//src/com/huasoft/ilearning/action/DepartAction.java=UTF-8
+encoding//src/com/huasoft/ilearning/dao/EmployeeDaoImpl.java=UTF-8
+encoding//src/com/huasoft/ilearning/dao/RoleDaoImpl.java=UTF-8
+encoding//src/com/huasoft/ilearning/util/JsonUtil.java=UTF-8
+encoding/<project>=UTF-8
